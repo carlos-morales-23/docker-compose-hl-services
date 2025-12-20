@@ -1,0 +1,11 @@
+services:
+  portainer_agent:
+    image: portainer/agent:latest
+    container_name: ${PAGENT_CONTAINER_NAME}
+    ports:
+      - "${PAGENT_PORT}:9001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+      - /:/host
+    restart: always
