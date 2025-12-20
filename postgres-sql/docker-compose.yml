@@ -4,7 +4,7 @@ services:
     container_name: ${POSTGRES_CONTAINER_NAME}
     image: postgres:17.2
     restart: always
-    ports: 
+    ports:
       - "${POSTGRES_PORT}:5432"
     volumes:
       - ./postgresdb/data:/data/postgres
@@ -20,7 +20,7 @@ services:
     ports:
       - "${PGADMIN_PORT}:80"
     depends_on:
-      - ${POSTGRES_CONTAINER_NAME}
+      - postgresdb
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_USER}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
