@@ -1,6 +1,7 @@
 services:
   docmost:
     image: docmost/docmost:latest
+    container_name: ${DOCMOST_CONTAINER_NAME}
     depends_on:
       - redis
     environment:
@@ -15,6 +16,7 @@ services:
       - ./docmost:/app/data/storage
   redis:
     image: redis:7.2-alpine
+    container_name: ${REDIS_CONTAINER_NAME}
     restart: unless-stopped
     volumes:
       - ./redis_data:/data
