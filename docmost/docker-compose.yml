@@ -1,0 +1,20 @@
+services:
+  docmost:
+    image: docmost/docmost:latest
+    depends_on:
+      - redis
+    environment:
+      APP_URL: ${DOCMOST_URL}
+      APP_SECRET: ${DOCMOST_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+    ports:
+      - "${DOCMOST_PORT}:3000"
+    restart: unless-stopped
+    volumes:
+      - ./docmost:/app/data/storage
+  redis:
+    image: redis:7.2-alpine
+    restart: unless-stopped
+    volumes:
+      - ./redis_data:/data
