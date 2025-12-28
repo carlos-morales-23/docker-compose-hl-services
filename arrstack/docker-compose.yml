@@ -1,0 +1,68 @@
+services:
+  # Gestores de Descargas (Torrent)
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: ${QBITTORRENT_CONTAINER_NAME}
+    hostname: qbittorrent
+    restart: unless-stopped
+    volumes:
+      - ./qbittorrent/config:/config
+      - ${NASPATH}downloads:/downloads
+    ports:
+      - "${QBITTORRENT_PORT}:8080"       # Interfaz Web
+      - "6881:6881"       # Puerto TCP para Torrents
+      - "6881:6881/udp"   # Puerto UDP para Torrents
+    environment:
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+
+  # Indexadores
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: ${PROWLARR_CONTAINER_NAME}
+    hostname: prowlarr
+    restart: unless-stopped
+    volumes:
+      - ./prowlarr/config:/config
+      - ./prowlarr/backup:/data/backup
+      - ${NASPATH}downloads:/downloads
+    ports:
+      - "${PROWLARR_PORT}:9696"       # Interfaz Web
+
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: ${JACKETT_CONTAINER_NAME}
+    hostname: jackett
+    restart: unless-stopped
+    volumes:
+      - ./jackett/data:/config
+      - ${NASPATH}downloads:/downloads
+    ports:
+      - "${JACKETT_PORT}:9117"       # Interfaz Web
+
+  # Gestión de Medios (Películas y Series)
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: ${SONARR_CONTAINER_NAME}
+    hostname: sonarr
+    restart: unless-stopped
+    volumes:
+      - ./sonarr/config:/config
+      - ./sonarr/backup:/data/backup
+      - ${NASPATH}tvshows:/data/tvshows
+      - ${NASPATH}downloads:/downloads
+    ports:
+      - "${SONARR_PORT}:8989"       # Interfaz Web
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: ${RADARR_CONTAINER_NAME}
+    hostname: radarr
+    restart: unless-stopped
+    volumes:
+      - ./radarr/config:/config
+      - ${NASPATH}movies:/data/movies
+      - ./radarr/backup:/data/backup
+      - ${NASPATH}downloads:/downloads
+    ports:
+      - "${RADARR_PORT}:7878"       # Interfaz Web
