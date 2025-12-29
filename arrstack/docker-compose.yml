@@ -9,11 +9,11 @@ services:
       - ./qbittorrent/config:/config
       - ${NASPATH}downloads:/downloads
     ports:
-      - "${QBITTORRENT_PORT}:8080"       # Interfaz Web
+      - "${QBITTORRENT_PORT}:${QBITTORRENT_PORT}"       # Interfaz Web
       - "6881:6881"       # Puerto TCP para Torrents
       - "6881:6881/udp"   # Puerto UDP para Torrents
     environment:
-      - WEBUI_PORT=8080
+      - WEBUI_PORT=${QBITTORRENT_PORT}
       - TORRENTING_PORT=6881
 
   # Indexadores
