@@ -1,0 +1,23 @@
+services:
+  rustdesk-server:
+    container_name: ${RDS_CONTAINER_NAME}
+    image: rustdesk/rustdesk-server:latest
+    environment:
+      - ALWAYS_USE_RELAY=Y
+    command: hbbs
+    volumes:
+      - ./data:/root
+    network_mode: "host"
+
+    depends_on:
+      - rustdesk-relay
+    restart: unless-stopped
+
+  rustdesk-relay:
+    container_name: ${RDR_CONTAINER_NAME}
+    image: rustdesk/rustdesk-server:latest
+    command: hbbr
+    volumes:
+      - ./data:/root
+    network_mode: "host"
+    restart: unless-stopped
